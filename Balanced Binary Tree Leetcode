@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // Logic by Love babaar TC 0(n) and SC - only recursive calls.
+    // iss pair ka int part yeh define kar raha hai ki curr root node ke left/right ke mai kitne number of nodes hai .
+    // koi bhi tree balanced tab hoti hai jab har eak node ke left subarray and right subarray ke nodes hi height ka diff <= 1 ho.
+    pair<bool,int> solve(TreeNode * root){
+        // base case
+        if(root == NULL){
+            // agar root null hota hai to tree balanced hoti hai and root == NULL mai to koi node hi nhi hai to uske niche hi height to 0 hi hogi.
+            pair<bool,int> p = make_pair(true,0);
+            return p;
+        }
+
+        pair<bool,int> left = solve(root->left);
+        pair<bool,int> right = solve(root->right);
+
+        bool leftAns = left.first;
+        bool rightAns = right.first;
+
+        // abb mujhe yeh to check karna hoga na ki root ke niche ka jo tree hai woh balanced hai ki nhi 
+        bool diff = abs(left.second-right.second) <= 1;
+
+        // abb kyuki apne ko parent node ko niche se pair<bool,int> dena hai jisme evaluated bool and int value hogi so we have to create it.
+        pair<bool,int> ans;
+        ans.second = max(left.second,right.second) + 1;
+
+        if(diff && leftAns && rightAns){
+            ans.first = true;
+        }
+        else{
+            ans.first = false;
+        }
+
+        return ans;
+
+    }
+
+    bool isBalanced(TreeNode* root) {
+        pair<bool,int> p = solve(root);
+        return p.first;
+    }
+};
