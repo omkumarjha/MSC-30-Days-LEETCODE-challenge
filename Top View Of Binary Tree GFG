@@ -1,0 +1,48 @@
+/*
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+*/
+class Solution
+{
+    public:
+    // TC 0(n) SC 0(n) Love babbar 
+    // isme poora concept vertical order traversal ka hi laga hai but jab hum print karwa rahe hai then that time hum bas 1st element of a mapped horizontal distance ko hi consider kr rahe hai .because agar same hd pe multiple nodes hai to jo 1st node hoga wahi apne ko lena hai top view ke hisab se 
+    
+    vector<int> topView(Node *root){
+        
+        map<int,vector<int>> nodes;
+        queue<pair<Node * , int >> q;
+        q.push(make_pair(root,0));
+        vector<int> ans;
+        
+        while(!q.empty()){
+            pair<Node * ,int> temp = q.front();
+            q.pop();
+            
+            Node * frontNode = temp.first;
+            int hd = temp.second;
+            
+            nodes[hd].push_back(frontNode->data);
+            
+            if(frontNode->left){
+                q.push(make_pair(frontNode->left,hd-1));
+            }
+            if(frontNode->right){
+                q.push(make_pair(frontNode->right,hd+1));
+            }
+        }
+        
+        
+        for(auto i : nodes){
+            ans.push_back(i.second.front());
+        }
+        
+        return ans;  
+    
+    }
+
+};
