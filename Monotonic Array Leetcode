@@ -1,0 +1,32 @@
+class Solution {
+public:
+    
+    bool isMonotonic(vector<int>& nums) {
+        // Koi bhi array monotonic array tab hoga jab ya to uske elements constantly increase kar rahe honge ya to constantly decrease kar rahe hoge .
+        int n = nums.size();
+        // Edge case
+        if(n == 1 || n == 2){
+            return true;
+        }
+
+        int isMonotoneIncr = true;
+        int isMonotoneDecr = true;
+
+        // Checking for monotone increasing
+        for(int i = 0; i < n-1; i++){
+            if(nums[i] > nums[i+1]){
+                isMonotoneIncr = false;
+            }
+            if(nums[i+1] > nums[i]){
+                isMonotoneDecr = false;
+            }
+            // if given array na hi to increasing order mai ho na hi to decreasing order mai ho tab to woh pakka monotonic array nhi hoga kyuki by defination dono mai se kuch to honahi chahiye tha
+            if(isMonotoneIncr == false && isMonotoneDecr == false)
+                return false;
+        }
+
+        return isMonotoneIncr || isMonotoneDecr;
+        
+
+    }
+};
