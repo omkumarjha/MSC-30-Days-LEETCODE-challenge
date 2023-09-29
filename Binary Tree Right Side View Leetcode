@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+// Below approach is a recursive algorithm jisse hum right view of a binary tree find karenge. Try to make recursive tree to understand it better
+// TC - 0(n) && SC - 0(n)
+// You can also solve it through level order traversal . Complexities will be same only.
+
+void solve(TreeNode * root , vector<int> &ans,int level){
+    // Base case
+    if(root == NULL){
+        return ;
+    }
+    else{
+        // agar hum new level pe aa chuke hai it means root -> val ko ans mai dal do . ex initially level 0 pe to ans vector khali hi hoga to uss case mai condition met kar jayegi 
+        if(level == ans.size()){
+            ans.push_back(root->val);
+        }
+        solve(root->right,ans,level+1);
+        solve(root->left,ans,level+1); // agar uper se niche jaoge to offcource level to bhadega hi .
+    }
+}
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        solve(root,ans,0);
+        return ans;
+    }
+};
