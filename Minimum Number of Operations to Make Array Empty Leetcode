@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        map<int,int> mp; // Create a map to store the frequency of each number in nums.
+        
+        // Calculate the frequency of each number and store it in the map.
+        for(int num:nums) {
+            mp[num]++;
+        }
+        
+        int moves = 0; // Initialize the moves counter to 0.
+        
+        // Iterate through the map.
+        for(auto it:mp) {
+            int f = it.second; // Get the frequency of the current number.
+            
+            if(f == 1) {
+                return -1; // If any number occurs only once, it's impossible to achieve the desired pattern, so return -1.
+            }
+            
+            // Calculate the number of moves needed to make all occurrences of the current number a multiple of 3.
+            moves += f / 3;
+            
+            // If there are any remaining occurrences (not divisible by 3), add one more move.
+            if(f % 3) {
+                moves++;
+            }
+        }
+        
+        return moves; // Return the total number of moves.
+    }
+};
