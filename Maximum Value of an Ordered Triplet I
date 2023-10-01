@@ -1,0 +1,22 @@
+class Solution {
+public:
+    long long maximumTripletValue(vector<int>& nums) {
+        long long ans;
+        int n = nums.size();
+        long long maxi = LLONG_MIN; // because we are woring with long long variables
+        
+        for(int i = 0; i < n; i++){
+            for(int j = i+1; j < n; j++){
+                for(int k = j+1; k < n; k++){
+                    ans = (long long)(nums[i] - nums[j]) * nums[k]; // kyuki yeh multiply hoke integer se bahar chala gaya so for that .
+                    maxi = max(ans,maxi);
+                }
+            }
+        }
+        
+        if(maxi < 0){
+            return 0;
+        }
+        return maxi;
+    }
+};
