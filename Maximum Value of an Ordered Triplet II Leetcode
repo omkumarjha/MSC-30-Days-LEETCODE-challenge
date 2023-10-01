@@ -1,0 +1,36 @@
+class Solution {
+public:
+    long long maximumTripletValue(vector<int>& nums) {
+        // Here we need an approach of O(n) time complexity, for which for every index j, we need the max number before that index and the max number after that index, to find the max value of (nums[i]-nums[j])*nums[k].
+        // so isme hum basically prefix sum and suffix sum wale array ko maintain kar rahe honge.
+        
+        int n = nums.size();
+        long long ans;
+        
+        int prefixSum[n];
+        prefixSum[0] = nums[0];
+         
+        for(int i = 1; i < n; i++){
+            prefixSum[i] = max(prefixSum[i-1],nums[i]);
+        }
+        
+        int suffixSum[n];
+        suffixSum[n-1] = nums[n-1];
+        
+        for(int i = n-2; i >= 0; i--){
+            suffixSum[i] = max(suffixSum[i+1],nums[i]);
+        }
+        
+        // abb hamara prefix and suffix sum maintain ho chuka hai so abb hum 1 to array ki length - 2 tab loop chalenge aur maxi find karenge
+        for(int i = 1; i < n-1; i++){
+            long long b = prefixSum[i-1] - nums[i];
+            long long c = suffixSum[i+1];
+            ans = max(ans,b*c);
+        }
+        
+        return ans;
+        
+        
+        
+    }
+};
