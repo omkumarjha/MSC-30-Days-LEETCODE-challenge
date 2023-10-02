@@ -1,0 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /*
+    Approach 1 - jisme pehle to hum root se p ka path then root se q ka path kisi do alag vectors mai store karwa lenge and then piche se sabse pehla common element jo hoga wahi apna LCA hoga.
+    Approach 2 - below approach mai basically hum har eak node ke left and right ke andar p and q ko search kar rahe hai . and jaise koi bhi eak mil jaata hai to hum usse return karwa rahe hai and agar kisi bhi eak node ke liye left and right dono se answer aa raha ho it means woh LCA hoga. TC 0(n)  SC 0(n)
+
+    */
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // Base case
+        if(root == NULL){
+            return NULL;
+        }
+        // Agar curr node p ya q kisi eak ke bhi same hai then return it .
+        if(root->val == p->val || root->val == q->val){
+            return root;
+        }
+
+        TreeNode* leftAns = lowestCommonAncestor(root->left,p,q);
+        TreeNode* rightAns = lowestCommonAncestor(root->right,p,q);
+
+        // yaha pe curr node root ka left and right dono traverse ho chuka hai .
+
+        if(leftAns != NULL && rightAns != NULL){
+            return root; // yahi hamara LCA hoga.
+        }
+        else if(leftAns != NULL && rightAns == NULL){
+            return leftAns;
+        }
+        else if(leftAns == NULL && rightAns != NULL){
+            return rightAns;
+        }
+        else{
+            return NULL; // agar leftAns and rightAns dono hi null ho . means unke left and right subtree mai p and q present nhi hai .
+        }
+
+    }
+};
