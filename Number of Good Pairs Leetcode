@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        map<int,int> mp;
+        int sum = 0;
+
+        // storing occurences of every number of nums in map 
+        for(auto num : nums){
+            mp[num]++;
+        }
+
+        for(auto item : mp){
+            int n = item.second;
+            sum += (n * (n-1))/2;
+        }
+
+        return sum;
+    }
+};
