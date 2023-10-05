@@ -1,0 +1,43 @@
+//User function Template for C++
+
+//Node Structure
+/*
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+*/
+
+class Solution{
+  public:
+    //Function to return the maximum sum of non-adjacent nodes.
+    // TC - 0(n) and SC 0(n) . 
+    // Isme hm uper eak pair bhej rahe hai jiske inclusion part pe root->data and piche ke nodes ke exclusion ki value ko sum up karke bhej rahe hai .
+    // Ans exclusion wale part mai left pair ke first and seecond ka maxi and right pair ke first and second ka maxi and then dono ko sum karke return kardo.
+    pair<int,int> solve(Node * root){
+        if(root == NULL){
+            pair<int,int> p = make_pair(0,0);
+            return p;
+        }
+        else{
+            pair<int,int> leftAns = solve(root->left);
+            pair<int,int> rightAns = solve(root->right);
+            
+            pair<int,int> result;
+            
+            result.first = root->data + leftAns.second + rightAns.second;
+            result.second = max(leftAns.first,leftAns.second) + max(rightAns.first,rightAns.second);
+            
+            return result;
+        }
+    }
+    
+    int getMaxSum(Node *root) {
+        
+        pair<int,int> result = solve(root);
+        return max(result.first,result.second);
+        
+    }
+};
