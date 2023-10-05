@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        /*
+        // Below approach Map se karrahe hai to TC to o(n) hi hogi par space o(1) nhi o(n) ho jayegi .
+        map<int,int> m;
+
+        // Humne yaha map mai occurence store karwa li hai .
+        for(auto num : nums){
+            m[num]++;
+        }
+
+        int temp = nums.size()/2; // n/2 se jyada occurence chahiye to isliye variable mai store karwa liya usse.
+
+        // yaha par ham map ke har eak key ke occurence ko uttha rahe hai aur check kar rahe hai jo bhi n/2 se jyada occur karega uss element ko hum return karwadenge.
+        for(auto itr : m){
+            if(itr.second > temp){
+                return itr.first;
+            }
+        }
+
+        return -1;
+
+        */
+
+
+        // Below approach better way hai iss qustion ko solve karne ka here TC o(n) and space o(1) . Moores voting algo.
+        // isme basically hum cancellation wala concept use karte hai 
+        // eg array = {1,1,1,1,2,2,2} so isme 1 to 4 baar hai to apne ko aage koi aaisa element ki frequency chahiye jo 1 ke frequency ko cancel karke majority ban jaye.
+        
+        int ansIndix = 0;
+        int count = 1;
+
+        for(int i = 1; i < nums.size(); i++){
+            if(nums[i] == nums[ansIndix]){
+                count++;
+            }
+            else{
+                count--;
+            }
+            if(count == 0){
+                ansIndix = i;
+                count = 1;
+            }
+        }
+        return nums[ansIndix];
+    }
+};
