@@ -1,0 +1,35 @@
+class Solution {
+public:
+    // Observation
+    // Assume karo array ka size 8 to 8/3 approx 2 hoga it means hume minimum of 3 frequneny wala element chahiye majority ke liye 3 + 3 + 3 --> it means kewal 2 hi element hi frequency minimum 3 hoke number of elements 8 hogi . it means chahe array ka size kitna bhi ho vector mai sirf 2 hi elements honge.
+
+    vector<int> majorityElement(vector<int>& nums) {
+        vector<int> ans;
+        int count1 = 0 , count2 = 0;
+        int m1  = INT_MIN, m2 = INT_MIN; // m1 and m2 majority elements ko define kar rahe hai .
+        int n = nums.size();
+
+        for(auto num : nums){
+
+            if (num == m1) count1++;
+            else if (num == m2) count2++;
+            else if (count1 == 0) { count1++;  m1 = num;   }
+            else if (count2 == 0) { count2++;  m2 = num;   }
+            else { count1-- ; count2--; }
+        
+        }
+        // now m1 and m2 koi elements ko hold kar rahe hai but we are not sure whether they are the right elements or not so for that we are just checking to confirm it.
+        count1 = count2 = 0;
+        for(auto num : nums){
+
+            if( num == m1)  count1++;
+            else if (num == m2) count2++;
+        }
+            
+        if (count1 >  n / 3 )  ans.push_back(m1);
+        if (count2 >  n / 3 )  ans.push_back(m2);
+   
+        return ans;
+    }
+    
+};
