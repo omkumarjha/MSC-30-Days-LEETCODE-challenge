@@ -1,0 +1,66 @@
+/*
+  reverse alternate nodes and append at the end
+  The input list will have at least one element  
+  Node is defined as 
+  struct Node
+  {
+      int data;
+      struct Node *next;
+    
+      Node(int x){
+        data = x;
+        next = NULL;
+      }
+    
+   };
+
+*/
+class Solution
+{
+    public:
+    
+    // TC - 0(n) and SC - 0(1) . Logic Made By Om .
+    
+    Node* reverseList(Node* head) {
+        // Edge cases 
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+
+        Node * temp = NULL;
+        Node * curr = head;
+        Node * prev = head;
+
+        while(curr != NULL){
+            curr = curr -> next;
+            prev->next = temp;
+            temp = prev;
+            prev = curr;
+        }
+
+        return temp;
+
+    }
+    
+    void rearrange(struct Node *odd){
+        
+        // Edge case for single node.
+        if(odd->next == NULL){
+            return ;
+        }
+        
+        Node * tail1 = odd;
+        Node * tail2 = odd->next;
+        Node * temp = tail2;
+        
+        while(tail2 != NULL && tail2->next != NULL){
+            tail1->next = tail2->next;
+            tail2->next = tail2->next->next;
+            tail1 = tail1 -> next;
+            tail2 = tail2 -> next;
+        }
+        
+        tail1->next = reverseList(temp);
+    
+    }
+};
