@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // Inorder array ke har eak element ki mapping uske index se kardi .
+    void createMapping(vector<int> &inorder,int n,map<int,int> &nodeToIndex){
+        for(int i = 0; i < n; i++){
+            nodeToIndex[inorder[i]] = i;
+        }
+    }
+
+    // Isme basically hum preorder ka preorderindex wala element uthate hai then fir uss elemeents ko use karke root node create karte hai then pata karte hai ki woh element inorder array ke kis position pe hai based on that hum left ki and right ki call marte hai .
+    // preorder means NLR and inorder means LNR isliye preorder ka first element ki tree ka root hota hai .
+    // jab bhi hum left ya right ki call mar rahe hai to hum preorderIndex+1 karte chal rahe hai .
+
+    TreeNode * solve(vector<int> &preorder,vector<int> &inorder,int & preorderIndex,int inorderStart,int inorderEnd,int n,map<int,int> &nodeToIndex){
+        // base case
+        if(preorderIndex >= n || inorderStart > inorderEnd){
+            return NULL;
+        }
+        else{
+            int element = preorder[preorderIndex++];
+            TreeNode * root = new TreeNode(element);
+            int pos = nodeToIndex[element];
+
+            // Reccursive call for left and right part 
+            // kyuki hum tree construct kar rahe hai isliye root -> left ya root -> right karrahe hai otherwise for normal accessing the elemnet we can neglect that.
+            root->left = solve(preorder,inorder,preorderIndex,inorderStart,pos-1,n,nodeToIndex);
+            root->right = solve(preorder,inorder,preorderIndex,pos+1,inorderEnd,n,nodeToIndex);
+
+            return root;
+        }
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = inorder.size();
+        map<int,int> nodeToIndex;
+        createMapping(inorder,n,nodeToIndex);
+
+        int preorderIndex = 0;
+        return solve(preorder,inorder,preorderIndex,0,n,n,nodeToIndex);
+
+    }
+};
