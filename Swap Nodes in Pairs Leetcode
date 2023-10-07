@@ -1,0 +1,30 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    // TC - 0(n) and SC - 0(1) . Isme humne eak case solve kardiya ie two adjacent pairs ko swap kardiya and bakki recursion ko bola ki aage ke adjacent nodes ko bhi swap karke le aao .
+    
+    ListNode* swapPairs(ListNode* head) {
+        if(head == NULL) return NULL;
+        if(head -> next == NULL) return head;
+
+        ListNode * tail1 = head -> next;
+        ListNode * head2 = tail1 -> next;
+
+        // Swapping the nodes 
+        head -> next = NULL;
+        tail1 -> next = head;
+
+        head->next = swapPairs(head2);
+
+        return tail1;
+    }
+};
