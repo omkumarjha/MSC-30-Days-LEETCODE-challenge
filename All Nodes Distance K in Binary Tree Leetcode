@@ -1,0 +1,100 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    /*
+        Steps to solve this problem : 
+        1st : From start node we can infect its left and right child but not its parent child so we will create a child to parent mapping . as well as we will return the start node
+        2nd : we will infect the tree isme we will mantain 2 DS first visted mapping which will store all those nodes which are already infacted or which are visited and queue is for every new node which comes and after the for loop ends if any changes happened in the queue it means increment the number of minutes to 1 .
+
+        TC - 0(n log n ) because for every node we are mapping it with their parent and it is happening n times 
+        SC - 0(n)
+    */
+
+    TreeNode * createChildToParentMapping(TreeNode * root,int start,map<TreeNode * , TreeNode * > &nodeToParent){
+        // We are implementing this using level order traversal
+        TreeNode * res = NULL;
+        queue<TreeNode * > q;
+        q.push(root);
+
+        nodeToParent[root] = NULL;
+
+        while(!q.empty()){
+            TreeNode * front = q.front();
+            q.pop();
+
+            if(front->val == start){
+                res = front;
+            }
+            if(front->left){
+                nodeToParent[front->left] = front;
+                q.push(front->left);
+            }
+            if(front->right){
+                nodeToParent[front->right] = front;
+                q.push(front->right);
+            }
+        }
+
+        return res;
+    }
+
+    void infectTree(TreeNode* root, int &minutes,map<TreeNode * , TreeNode * > &nodeToParent){
+        map<TreeNode*,bool> visited;
+        queue<TreeNode*> q;
+        q.push(root);
+        visited[root] = true;
+
+        while(!q.empty()){
+            int size = q.size(); // for every node hum uske left , right and parent ko check kar rahe hai ki kya usko infect kiya jaa sakta hai agar ha to kar denge and visited ke andar mapping bhih store kar denge and flag ko bhi set kardenge so that we can increse the minutes .
+            
+            int flag = 0;
+
+            for(int i = 0; i< size; i++){
+                TreeNode * front = q.front();
+                q.pop();
+
+                if(front->left != NULL && !visited[front->left]){
+                    visited[front->left] = true;
+                    q.push(front->left);
+                    flag = 1;
+                }
+                if(front->right != NULL && !visited[front->right]){
+                    visited[front->right] = true;
+                    q.push(front->right);
+                    flag = 1;
+                }
+                if(nodeToParent[front] != NULL && !visited[nodeToParent[front]]){
+                    visited[nodeToParent[front]] = true;
+                    q.push(nodeToParent[front]);
+                    flag = 1;
+                }
+            }
+
+            if(flag == 1){
+                minutes++;
+            }
+        }
+    }
+
+
+    int amountOfTime(TreeNode* root, int start) {
+        map<TreeNode * , TreeNode*> nodeToParent;
+        int minutes = 0;
+
+        TreeNode * startNode = createChildToParentMapping(root,start,nodeToParent); // 1st step
+        infectTree(startNode,minutes,nodeToParent);
+
+        return minutes;
+
+    }
+};
