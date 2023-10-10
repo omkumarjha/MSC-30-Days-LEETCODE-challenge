@@ -1,0 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    // code is similar to "Amount of Time for Binary Tree to Be Infected"
+    // TC - 0(n logn) and SC - 0(n)
+    // Approach 
+    // 1 . mapping kardo for every child node to its parent node ex . in first example agar apne ko 5 se 1 ka distance nikalna hai to apne ko 5 se 3 to jaana hi padega so for that we need mapping.
+    // 2 . get the target node.
+    // 3 . then uss target node ko pakad ke level order tra. karo and jaise hi count ki value k ke barabar aa jaati hai it means uss queue ke andar jitne bhi nodes hai wahi answer hone wale hai .
+
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k){
+        queue<TreeNode*> q;
+        unordered_map<TreeNode*,TreeNode*> parent;
+        q.push(root);
+        
+        // To store the mapping for every child node to its parent node.
+        while(!q.empty()){
+            TreeNode*front=q.front();
+            q.pop();
+            if(front->left){
+                parent[front->left] = front;
+                q.push(front->left);
+            }
+            if(front->right){
+                parent[front->right] = front;
+                q.push(front->right);
+            }
+        }
+
+        unordered_map<TreeNode*,bool> visited;
+        q.push(target);
+        visited[target]=true;
+        int cnt=0;
+        while(!q.empty()){
+            if(cnt==k) break;
+            cnt++;
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                TreeNode*front=q.front();
+                q.pop();
+                if(front->left  &&  !visited[front->left]){
+                    q.push(front->left);
+                    visited[front->left]=true;
+                }
+                if(front->right  &&  !visited[front->right]){
+                    q.push(front->right);
+                    visited[front->right]=true;
+                }
+                if(parent[front]  &&  !visited[ parent[front] ]){
+                    q.push( parent[front] );
+                    visited[parent[front]]=true;
+                }
+            }
+        }
+        vector<int> ans;
+        while(!q.empty()){
+            TreeNode*front=q.front();
+            q.pop();
+            ans.push_back( front->val );
+        }
+        return ans;
+    }
+};
