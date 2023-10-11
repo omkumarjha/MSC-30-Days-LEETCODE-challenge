@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    int getLength(ListNode * head){
+        ListNode * temp = head;
+        int length = 0;
+
+        while(temp != NULL){
+            length++;
+            temp = temp -> next;
+        }
+
+        return length;
+    }
+       
+    ListNode* reverseK(ListNode* head, int k,int length) {
+        // Base case
+        if(head == NULL || head->next == NULL || k == 1 || length < k){
+            return head;
+        }
+
+        ListNode * temp = NULL;
+        ListNode * curr = head;
+        ListNode * prev = head;
+        int count = 0;
+
+        // Eak case solve kardiya first k Nodes ko reverse karke.
+        while(curr !=  NULL && count < k){
+            curr = curr -> next;
+            prev->next = temp;
+            temp = prev;
+            prev = curr;
+            count++;
+        }
+
+        // Abb aage ke nodes ko recursion dekh lega 
+        head -> next = reverseK(curr,k,(length-k));
+
+        return temp; // temp hi to hai jisse hum traversal karpayenge reversed linked list mai 
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        int len = getLength(head);
+        return reverseK(head, k, len);
+    }
+};
