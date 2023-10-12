@@ -1,0 +1,94 @@
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+    int findPeek(MountainArray &mountainArr){
+        int length = mountainArr.length();
+        int start = 0 , end = length - 1 , mid = start + (end - start)/2;
+
+        while(start < end){
+            // pehla if mai hum 1st mountain SL pe honge
+            if(mountainArr.get(mid) < mountainArr.get(mid+1)){
+                start = mid + 1;
+            }
+            else{
+                end = mid;
+            }
+            mid = start + (end - start)/2;
+        }
+        return mid;
+    }
+
+    int leftSearch(int target, MountainArray &mountainArr,int index){
+        int ans = -1;
+        int start = 0 , end = index , mid = start + (end - start)/2;
+
+        while(start <= end){
+            // pehla if mai hum 1st mountain SL pe honge
+
+            if(mountainArr.get(mid) == target){
+                ans = mid;
+                end = mid - 1;
+            }
+            else if(mountainArr.get(mid) < target){
+                start = mid + 1;
+            }
+            else{
+                end = mid - 1;
+            }
+            mid = start + (end - start)/2;
+        }
+        return ans;
+    }
+
+    int rightSearch(int target, MountainArray &mountainArr,int index){
+        int length = mountainArr.length();
+        int ans = -1;
+        int start = index , end = length - 1 , mid = start + (end - start)/2;
+
+        while(start <= end){
+            // pehla if mai hum 1st mountain SL pe honge
+
+            if(mountainArr.get(mid) == target){
+                ans = mid;
+                end = mid - 1;
+            }
+            else if(mountainArr.get(mid) < target){ 
+                end = mid - 1;
+            }
+            else{
+                start = mid + 1;
+            }
+            mid = start + (end - start)/2;
+        }
+        return ans;
+    }
+
+
+    int findInMountainArray(int target, MountainArray &mountainArr) {
+        int length = mountainArr.length();
+        int peekIndex = findPeek(mountainArr);
+
+        int leftAns = leftSearch(target,mountainArr,peekIndex-1);
+        int rightAns = rightSearch(target,mountainArr,peekIndex);
+
+        if(leftAns != -1){
+            return leftAns;
+        }
+        else if(rightAns != -1){
+            return rightAns;
+        }
+        else{
+            return -1;
+        }
+        
+    }
+};
