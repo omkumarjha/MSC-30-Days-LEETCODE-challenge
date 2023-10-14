@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> lastVisitedIntegers(vector<string>& words) {
+        vector<int> ans;
+        vector<int> numsReverse;
+        vector<int> num;
+        int k = 0;
+        
+        for(int i = 0; i < words.size(); i++){
+            if(words[i] == "prev"){
+                k++;
+                int size = numsReverse.size();
+                
+                if(size-1 >= k-1){
+                    ans.push_back(numsReverse[k-1]);
+                }
+                else{
+                    ans.push_back(-1);
+                }
+            }
+            else{
+                k = 0;
+                num.push_back(stoi(words[i]));
+                
+                numsReverse.clear();
+                
+               for(int j = 0; j < num.size(); j++){
+                   numsReverse.push_back(num[j]);
+               }
+                
+                reverse(numsReverse.begin(), numsReverse.end());
+            }
+        }
+        
+        return ans;
+    }
+};
