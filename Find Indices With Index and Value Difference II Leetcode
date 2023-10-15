@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
+        // Approach discussed by programming pathshala YT . TC - 0(n) and SC - 0(1)
+        // we can solve this using prefix_min and prefix_max array as well but usme Space 0(n) ho jaati .
+        // jab bhi apne ko index return karne ke liye bolta hai to mostly prefix ya suffix sum lag jaata hai .
+        // To isme bus hume prefix_min and prefix_max hi dekhna hai means apne ko sirf one sided hi checking karni hai kyuki isse doosre side ka automatically ho jayega agar hum right to left bhi karenge matlab suffix_min and suffix_max maintain karke to duplicacy ho jayegi . ex 1st mai starting se jab hum 4 ko 5 se karenge to same peeche se bhi apne ko 5 ko 4 se check karne padega so its better ki one sided hi check kare
+        // question ka key tha ki koi bhi {i,j} pair jo condition satisfy kar raha hai use return kardo to usme chahe pref_max ans banaye ya pref_min doesn't matter.
+        
+        int pref_min = INT_MAX , pref_max = INT_MIN;
+        
+        for(int j = 0; j < nums.size(); j++){
+            int i = j - indexDifference; // j ke liye hum i bana rahe hai ki woh index diff ko follow kare.
+            
+            if(i >= 0){
+                pref_min = min(pref_min,nums[i]);
+                pref_max = max(pref_max,nums[i]);
+                
+                // Agar index diff done hai to Now checking for value difference.
+                
+                // first check karo ki 0 se i ka jo max hai kya woh to answer nhi bana raha agar yes to uss pref_max ka index ko j ke sath return kardo same for pref_min ke liye bhi .
+                
+                if(abs(pref_max - nums[j]) >= valueDifference){
+                    for(int k = 0; k <= i; k++){
+                        if(nums[k] == pref_max){
+                            return {k,j};
+                        }
+                    }
+                }
+                
+                if(abs(pref_min - nums[j]) >= valueDifference){
+                    for(int k = 0; k <= i; k++){
+                        if(nums[k] == pref_min){
+                            return {k,j};
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        return {-1,-1}; // agar koi bhi pair exist nhi kar rahe hai then return this.
+        
+    
+        
+    }
+};
