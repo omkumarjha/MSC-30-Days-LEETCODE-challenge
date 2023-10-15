@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int k) {
+        string ans = "";
+        int count = 0 , mini = INT_MAX;
+        
+        for(int i = 0; i < s.size(); i++){
+            for(int j = i; j < s.size(); j++){
+                if(s[j] == '1'){
+                    count++;
+                }
+                if(count == k){
+                    int len = j-i+1;
+                    
+                    if(len < mini){
+                        mini = len;
+                        ans = s.substr(i,len);
+                    }
+                    else if(len == mini){
+                        string s1 = s.substr(i,len);
+                        
+                        int comparisonResult = s1.compare(ans);
+                        
+                        if(comparisonResult < 0){
+                            ans = s1;
+                        }
+                    }
+                    count = 0;
+                    break;
+                }
+            }
+            count = 0;
+        }
+        
+        return ans;
+    }
+};
