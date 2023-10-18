@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        // Yeh sliding window approach se question solve hoga by Tech adora by Nivedita
+
+        int n1 = haystack.length();
+        int n2 = needle.length();
+        int start = 0 , i = 0 , j = 0;
+
+        if(n2 > n1){
+            return -1;
+        }
+        while(i < n1 && j < n2){
+            if(haystack[i] == needle[j]){
+                i++;
+                j++;
+            }
+            else{
+                j = 0;
+                start++;
+                i = start;
+            }
+        }
+
+        if(j == n2){
+            return start;
+        }
+        return -1;
+    }
+};
