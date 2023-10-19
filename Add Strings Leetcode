@@ -1,0 +1,63 @@
+class Solution {
+public:
+    // 1st approach jisme jyada overhead hai .
+    /*
+    string addStrings(string num1, string num2) {
+
+        string result = "";
+        int i = num1.size() - 1;
+        int j = num2.size() - 1;
+        int carry = 0;
+
+        while(i >= 0 && j >= 0){
+            int sum = (num1[i--] - '0') + (num2[j--] - '0') + carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            result = to_string(sum) + result;
+        }
+
+        while(i >= 0 && j < 0){
+            int sum = (num1[i--] - '0') + carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            result = to_string(sum) + result;
+        }
+        while(i < 0 && j >= 0){
+            int sum = (num2[j--] - '0') + carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            result = to_string(sum) + result;
+        }
+
+        while(carry != 0){
+            int sum = carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            result = to_string(sum) + result;
+        }
+        return result;
+    }
+    */
+
+    // Clear and simple code 
+
+    string addStrings(string num1, string num2) {
+        string result = "";
+        int i = num1.size() - 1;
+        int j = num2.size() - 1;
+        int carry = 0;
+
+        while (i >= 0 || j >= 0 || carry > 0) {
+            int x = (i >= 0) ? num1[i] - '0' : 0;
+            int y = (j >= 0) ? num2[j] - '0' : 0;
+            int sum = x + y + carry;
+            carry = sum / 10;
+            result = to_string(sum % 10) + result;
+            
+            if (i >= 0) i--;
+            if (j >= 0) j--;
+        }
+
+        return result;
+    }
+};
