@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool solve(TreeNode * root,long long min,long long max){
+        if(root == NULL){
+            return true;
+        }
+        else{
+            if(root -> val > min && root -> val < max){
+                int left = solve(root->left,min,root->val);
+                int right = solve(root->right,root->val,max);
+                return (left && right);
+            }
+            else{
+                return false;  // it means the BST is not valid.
+            }
+        }
+    }
+    bool isValidBST(TreeNode* root) {
+        // why we used Long in place of INT_MIN and INT_MAX ?
+        // Simple constraints mai node ki value int ke range mai lie kar rahi hai to aaisa bhi ho sakta hai ki BST valid ho but fir bhi less then ki bajay greater then aa jaye and return false ho jaye isliye we are using some higher value.
+        return solve(root,LONG_MIN,LONG_MAX);
+    }
+};
