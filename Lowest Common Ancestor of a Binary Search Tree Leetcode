@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    // Approach 1 - Jisme hum binary tree pe LCA find karne ka logic laga sakte hai . TC - 0(n) and SC - 0(h)
+    // Optimized Approach TC - 0(h) and SC - 0(1)
+        /* 
+        1st case - jab (root->val > p->val && root->val > q->val) then move your pointer to left subtree.
+        2nd case - jab (root->val < p->val && root->val < q->val) then move your pointer to right subtree.
+        last case - when (root->val > p->val && root->val < q->val) ya fir (root->val < p->val && root->val > q->val) inn dono mai se koi bhi hai to it means root is our LCA.
+
+        */
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    
+        while(root != NULL){
+            if(root->val > p->val && root->val > q->val){
+                root = root -> left;
+            }
+            else if(root->val < p->val && root->val < q->val){
+                root = root -> right;
+            }
+            else{
+                return root;
+            }
+        }
+
+        return NULL;
+    }
+};
