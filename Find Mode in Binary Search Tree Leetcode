@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // Below function BST ke har eak element ki mapping kar dega uski occurence ke sath.
+    // TC - 0(n logn) & SC - 0(n)
+
+    void solve(TreeNode * root,map<int,int> &freq){
+        if(root == NULL){ return ;}
+        else{
+            freq[root->val]++;
+            solve(root->left,freq);
+            solve(root->right,freq);
+        }
+    }
+
+    vector<int> findMode(TreeNode* root) {
+        vector<int> ans;
+        map<int,int> freq;
+
+        solve(root,freq);
+        int maxFreq = INT_MIN;
+
+        // Below loop se humne maximum frequency find kar li har eak element mai se.
+        for(auto item : freq){
+            if(item.second > maxFreq){
+                maxFreq = item.second;
+            }
+        }
+
+        // abb hum bas har eak element ki freq se maxFreq tak pahuchna chahte hai .
+        for(auto item : freq){
+            if(item.second == maxFreq){
+                ans.push_back(item.first);
+            }
+        }
+
+        return ans;
+
+    }
+};
