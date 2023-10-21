@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // TC - 0(n) and SC - 0(n);
+    
+    void inorderTraversal(TreeNode * root,vector<int> &ans){
+        // Base case
+        if(root == NULL){ return ;}
+        else{
+            inorderTraversal(root->left,ans);
+            ans.push_back(root->val);
+            inorderTraversal(root->right,ans);
+        }
+    }
+
+    bool findTarget(TreeNode* root, int k) {
+        vector<int> ans;
+        // Storing Inorder of The BST in sorted order
+        inorderTraversal(root,ans);
+
+        // Applying 2 pointer approach to find the pair with the given sum target
+        int i = 0 , j = ans.size()-1;
+
+        while(i < j){
+            int sum = ans[i] + ans[j];
+            if(sum == k){
+                return true;
+            }
+            else if(sum > k){
+                j--;
+            }
+            else{
+                i++;
+            }
+        }
+
+        return false; // Koi pair nhi mila.
+
+    }
+};
