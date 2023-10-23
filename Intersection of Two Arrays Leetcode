@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+    // Iss wale question mai arrays sorted nhi hai agar hote to hum 2 pointer approch lagate.
+        vector<int> v;
+        set<int> s;
+
+        // Sabse phele pehle array ke elements ko set mai dalo 
+        for(auto num : nums1){
+            s.insert(num);
+        }
+
+        // Ab check karo ki nums2 ka individual element present hai set mai ki nhi agar hai   to phir uss element ko vector mai push karo and sath mai uss element ko set mai se bhi remove karo.
+        for(auto num : nums2){
+            if(s.count(num)){
+                v.push_back(num);
+                s.erase(num);
+            }
+        }
+
+        return v;
+
+    }
+};
